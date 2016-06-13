@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.yahoo.ec.parsec</groupId>
+        <artifactId>parsec-base-build</artifactId>
+        <version>@@project.version@@</version>
+    </parent>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <packaging>war</packaging>
+    <name>${artifactId}</name>
+    <description>${artifactId}</description>
+    <version>${version}</version>
+    <url>https://yahoo.jiveon.com/groups/your-jive-group</url>
+
+    <issueManagement>
+        <system>Jira</system>
+        <url>https://jira.corp.yahoo.com/browse/your-jira-project</url>
+    </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <bug.product>your product</bug.product>
+        <bug.component>your component</bug.component>
+        <mailingList.name>your-mailing-list@yahoo-inc.com</mailingList.name>
+        <scm.path>your-scm-path</scm.path>
+
+        <checkstyle.skip>false</checkstyle.skip>
+        <enforcer.skip>true</enforcer.skip>
+        <pmd.skip>false</pmd.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.findbugs.failure.strict>true</maven.findbugs.failure.strict>
+    </properties>
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@git.corp.yahoo.com/your-git-path.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,133 @@
+group = 'com.yahoo.parsec.parsec-templates'
+
+apply plugin: 'groovy'
+apply plugin: 'pmd'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+
+    //gradle-templates
+    maven{
+        url 'http://dl.bintray.com/cjstehno/public'
+    }
+}
+
+dependencies {
+    compile('org.codehaus.groovy:groovy-all:2.4.4'){transitive = true}
+    compile('gradle-templates:gradle-templates:1.4.1'){transitive = true}
+    compile gradleApi()
+    compile localGroovy()
+
+    testCompile(
+            'org.codehaus.groovy:groovy-all:2.4.4',
+            'org.spockframework:spock-core:1.0-groovy-2.4',
+            'junit:junit:4.12',
+            'cglib:cglib-nodep:2.2'
+    )
+}
+
+buildscript{
+    repositories {
+        maven{
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+    dependencies{
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.4"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
+//For maven-publish plugin (local testing only)
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+publishing {
+    publications{
+        maven(MavenPublication){
+            from components.java
+            artifact shadowJar
+        }
+    }
+    repositories{
+        maven {
+            url uri('./repo')
+        }
+    }
+}
+
+//For plugin-publish plugin
+apply plugin: "com.gradle.plugin-publish"
+
+pluginBundle {
+    website = 'http://www.gradle.org/'
+    vcsUrl = 'https://github.com/gradle/gradle'
+    description = 'Parsec extension of gradle-templates'
+    tags = ['templates', 'parsec']
+    plugins {
+         parsecTemplatesPlugin {
+            id = 'com.yahoo.parsec.template-plugin'
+            displayName = 'Parsec Template Plugin'
+         }
+    }
+}
+
+//For gradle release plugin
+apply plugin: 'net.researchgate.release'
+
+release {
+    //release configurations
+    failOnUnversionedFiles = false
+
+}
+
+updateVersion << {
+    def apply_file = new File('installation', 'apply.groovy')
+    def oldVersion = project.property("release.releaseVersion")
+    def newVersion = project.property("release.newVersion")
+    ant.replaceregexp(file: apply_file, match: "version: '\\S+'", replace: "version: '${oldVersion}'")
+}
+
+afterReleaseBuild.dependsOn publishPlugins
+
+
+//For bintray plugin: temporary for apply.groovy only
+//Must be done manually as of now
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+
+    //TODO: replace personal account with Parsec's official account
+    user = 'wayne-wu'
+    key = 'a245711e4bda3c86fbe9210a8ac615462721d211'
+
+    filesSpec {
+        from './installation'
+        into '.'
+    }
+
+    publish = true
+
+    pkg {
+        repo = 'Gradle'
+        name = 'parsec-templates'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/wayne-wu/Gradle.git'
+
+        version {
+            name = '1.0-Test'
+            desc = 'Parsec Templates Apply Test'
+            vcsTag = '1.3.0'
+
+        }
+    }
+}
+
+
+//TODO: Need to chain up bintrayUpload with publishUpload once an overriding method for file is found
+
