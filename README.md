@@ -1,6 +1,6 @@
-#Parsec Templates
+#Parsec Template
 
-Parsec Templates Plugin is a gradle plugin extended from townsfold's [gradle templates plugin](https://github.com/townsfolk/gradle-templates).
+Parsec Template Plugin is a gradle plugin extended from townsfold's [gradle templates plugin](https://github.com/townsfolk/gradle-templates).
 It provides similar functionality as Maven's archetype, which generates files and directories based on a template. In parsec templates plugin, a custom template is provided which is tailored
 for Parsec. See the default output for a sample of what the folder structures will look like.
 
