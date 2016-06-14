@@ -89,6 +89,7 @@ updateVersion << {
     ant.replaceregexp(file: apply_file, match: "version: '\\S+'", replace: "version: '${oldVersion}'")
 }
 
+beforeReleaseBuild.dependsOn check
 afterReleaseBuild.dependsOn publishPlugins
 
 
@@ -97,8 +98,8 @@ afterReleaseBuild.dependsOn publishPlugins
 bintray {
 
     //TODO: replace personal account with Parsec's official account
-    user = 'wayne-wu'
-    key = 'a245711e4bda3c86fbe9210a8ac615462721d211'
+    user = bintray_user
+    key = bintray_key
 
     filesSpec {
         from './installation'
