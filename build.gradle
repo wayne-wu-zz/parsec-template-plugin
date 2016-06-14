@@ -18,9 +18,10 @@ buildscript{
 apply plugin: 'groovy'
 apply plugin: 'pmd'
 apply plugin: 'maven-publish'
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'net.researchgate.release'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.johnrengelman.shadow' //shadowJar
+apply plugin: 'net.researchgate.release' //release plugin
+apply plugin: 'com.jfrog.bintray' //bintray plugin
+apply plugin: "com.gradle.plugin-publish" //publish plugin
 
 repositories {
     mavenCentral()
@@ -61,8 +62,6 @@ publishing {
 }
 
 //For plugin-publish plugin
-apply plugin: "com.gradle.plugin-publish"
-
 pluginBundle {
     website = 'http://www.gradle.org/'
     vcsUrl = 'https://github.com/gradle/gradle'
