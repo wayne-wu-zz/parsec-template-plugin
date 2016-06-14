@@ -1,5 +1,5 @@
 //Temporary parsec.gradle file for testing
-apply from: "https://raw.githubusercontent.com/wayne-wu/parsec-base-build/master/parsec.gradle"
+apply from: '${applyFromPath}'
 
 group = '${projectGroup}'
 

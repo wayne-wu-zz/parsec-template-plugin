@@ -1,5 +1,6 @@
 package com.yahoo.parsec.parsec_templates.tasks
 
+import com.yahoo.parsec.parsec_templates.ParsecTemplatesExtension
 import org.gradle.api.tasks.TaskAction
 import templates.ProjectTemplate
 
@@ -15,6 +16,7 @@ class CreateParsecProjectTask extends AbstractProjectTask {
     String projectVersion
     String projectPath
     String projectGroupPath
+    String pluginExtension = getProject().getExtensions().findByType(ParsecTemplatesExtension.class)
 
 
     @TaskAction
@@ -55,14 +57,20 @@ class CreateParsecProjectTask extends AbstractProjectTask {
                     'resources'{}
                 }
             }
+            'config' {
+                'checkstyle' {
+                    'checkstyle-suppressions.xml' getText('/templates/checkstyle-suppressions.xml')
+                }
+                'pmd' {}
+                'findbugs' {
+                    'findbugs-exclude.xml' getText('/templates/findbugs-exclude.xml')
+                }
+            }
 
-
-            'build.gradle' template: '/templates/build.gradle', projectGroup: projectGroup
+            'build.gradle' template: '/templates/build.gradle', applyFromPath: project.parsecTemplate.applyFromPath, projectGroup: projectGroup
             'gradle.properties' template: '/templates/gradle.properties', projectVersion: projectVersion
             'README.md' template: '/templates/README.md', projectName: projectName
             'README.sh' getText('/templates/README.sh')
-            'checkstyle-suppressions.xml' getText('/templates/checkstyle-suppressions.xml')
-            'findbugs-exclude.xml' getText('/templates/findbugs-exclude.xml')
             //'pom.xml' getText('/templates/pom.xml') //TODO: Use built in gradle function to generate pom.xml
         }
     }

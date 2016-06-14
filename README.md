@@ -13,7 +13,7 @@ In order to run the parsec command directly in a directory without build.gradle.
 
 ```
 gradle.beforeProject { prj ->
-   prj.apply from: 'https://dl.bintray.com/wayne-wu/Gradle/apply.groovy'
+   prj.apply from: 'https://raw.githubusercontent.com/wayne-wu/parsec-template-plugin/master/installation/apply.groovy'
 }
 
 ```
@@ -44,34 +44,49 @@ parsecTemplate {
     }
 }
 ```
+
 Once you run `gradle createParsecProject` , the directory "sample" will be made under /src/main as well as the file "test.txt" based on the given template.
 You can put the template of the file anywhere as long as you specify the location (relative to your build script).
+
+The default `build.gradle` file will apply from Parsec Base Build, which provides all the necessary settings for you to
+get started. In cases when you would like the build.gradle to inherit from a different file. You can set:
+
+```
+parsecTemplate {
+    applyFromPath = 'PATH/yourfile.gradle'
+}
+```
 
 ##Default Output:
 
 If no extraTemplate is provided, below is the output that you should be getting:
 ```
-├── your_project_name
-│   ├── README.md
-│   ├── README.sh
-│   ├── build.gradle
-│   ├── checkstyle-suppressions.xml
-│   ├── findbugs-exclude.xml
-│   ├── gradle.properties
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── your
-│       │   │       └── group
-│       │   │           └── name
-│       │   ├── rdl
-│       │   ├── resources
-│       │   └── webapp
-│       └── test
-│           ├── java
-│           │   └── your
-│           │       └── group
-│           │           └── name
-│           └── resources
+your_project_name
+    ├── README.md
+    ├── README.sh
+    ├── build.gradle
+    ├── gradle.properties
+    ├── config
+    │   ├── checkstyle
+    │   │   └── checkstyle-suppressions.xml
+    │   ├── findbugs
+    │   │   └── findbugs-exclude.xml
+    │   └── pmd
+    └── src
+        ├── main
+        │   ├── java
+        │   │   └── your
+        │   │       └── group
+        │   │           └── name
+        │   ├── rdl
+        │   ├── resources
+        │   └── webapp
+        └── test
+            ├── java
+            │   └── your
+            │       └── group
+            │           └── name
+            └── resources
+
 
 ```
