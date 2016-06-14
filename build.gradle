@@ -1,7 +1,26 @@
 group = 'com.yahoo.parsec.parsec-templates'
 
+buildscript{
+    repositories {
+        maven{
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+    dependencies{
+        classpath group: 'com.gradle.publish'                  , name: 'plugin-publish-plugin', version: '0.9.4'
+        classpath group: 'com.github.jengelman.gradle.plugins' , name: 'shadow'               , version: '1.2.3'
+        classpath group: 'com.jfrog.bintray.gradle'            , name: 'gradle-bintray-plugin', version: '1.6'
+        classpath group: 'net.researchgate'                    , name: 'gradle-release'       , version: '2.4.0'
+    }
+}
+
 apply plugin: 'groovy'
 apply plugin: 'pmd'
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'net.researchgate.release'
+apply plugin: 'com.jfrog.bintray'
 
 repositories {
     mavenCentral()
@@ -15,38 +34,18 @@ repositories {
 }
 
 dependencies {
-    compile('org.codehaus.groovy:groovy-all:2.4.4'){transitive = true}
-    compile('gradle-templates:gradle-templates:1.4.1'){transitive = true}
+    compile (group: 'org.codehaus.groovy', name: 'groovy-all'      , version: '2.4.4'){transitive = true}
+    compile (group: 'gradle-templates'   , name: 'gradle-templates', version: '1.4.1'){transitive = true}
     compile gradleApi()
     compile localGroovy()
 
-    testCompile(
-            'org.codehaus.groovy:groovy-all:2.4.4',
-            'org.spockframework:spock-core:1.0-groovy-2.4',
-            'junit:junit:4.12',
-            'cglib:cglib-nodep:2.2'
-    )
-}
-
-buildscript{
-    repositories {
-        maven{
-            url "https://plugins.gradle.org/m2/"
-        }
-        jcenter()
-    }
-    dependencies{
-        classpath "com.gradle.publish:plugin-publish-plugin:0.9.4"
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-        classpath 'net.researchgate:gradle-release:2.4.0'
-    }
+    testCompile group:'org.codehaus.groovy', name: 'groovy-all' , version: '2.4.4'
+    testCompile group:'org.spockframework' , name: 'spock-core' , version: '1.0-groovy-2.4'
+    testCompile group:'junit'              , name: 'junit'      , version: '4.12'
+    testCompile group:'cglib'              , name: 'cglib-nodep', version: '2.2'
 }
 
 //For maven-publish plugin (local testing only)
-apply plugin: 'maven-publish'
-apply plugin: 'com.github.johnrengelman.shadow'
-
 publishing {
     publications{
         maven(MavenPublication){
@@ -78,8 +77,6 @@ pluginBundle {
 }
 
 //For gradle release plugin
-apply plugin: 'net.researchgate.release'
-
 release {
     //release configurations
     failOnUnversionedFiles = false
@@ -98,8 +95,6 @@ afterReleaseBuild.dependsOn publishPlugins
 
 //For bintray plugin: temporary for apply.groovy only
 //Must be done manually as of now
-apply plugin: 'com.jfrog.bintray'
-
 bintray {
 
     //TODO: replace personal account with Parsec's official account
