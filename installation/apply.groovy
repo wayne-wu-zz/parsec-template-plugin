@@ -10,7 +10,7 @@ buildscript{
     dependencies{
         classpath group: 'gradle.plugin.com.yahoo.parsec.parsec-templates',
                 name: 'parsec-templates',
-                version: '1.1.5'
+                version: '1.1.6'
     }
 }
 
