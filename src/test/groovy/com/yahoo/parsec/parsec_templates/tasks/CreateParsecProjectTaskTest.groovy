@@ -1,69 +1,105 @@
 package com.yahoo.parsec.parsec_templates.tasks
 
 import com.yahoo.parsec.parsec_templates.ParsecTemplatesExtension
-import org.gradle.testfixtures.ProjectBuilder
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.junit.After
-import org.junit.Before
+import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
-import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * @author waynewu
  */
-
-class CreateParsecProjectTaskTest{
-
+class CreateParsecProjectTaskTest extends Specification{
 
     @Rule
-    public TemporaryFolder folder = new TemporaryFolder()
+    TemporaryFolder folder = new TemporaryFolder()
 
-    protected Project project
-    protected Task task
+    private Project project
+    private Task task
+    private ParsecTemplatesExtension pluginExtension
 
-    private final Class taskClass
-
-    CreateParsecProjectTaskTest(){
-        this.taskClass = CreateParsecProjectTask
-    }
-
-    @Test
-    void create(){
-        project.extensions.create("parsecTemplate", ParsecTemplatesExtension)
+    def setup(){
+        project = new ProjectBuilder().withProjectDir(folder.getRoot()).build()
+        pluginExtension = project.extensions.create("parsecTemplate", ParsecTemplatesExtension)
+        task = project.task('createTask', type:CreateParsecProjectTask)
 
         project.ext["artifactId"] = 'test_name'
         project.ext["groupId"] = 'test.group'
         project.ext["parent_dir"] = folder.getRoot() as String
-
-        task.create()
-
-
-        assertFileExists 'test_name/src/main/java/test/group'
-        assertFileExists 'test_name/src/test/java/test/group'
-        assertFileExists 'test_name/src/main/rdl'
-        assertFileExists 'test_name/src/main/webapp'
-        assertFileExists 'test_name/src/main/resources'
-
-        assertFileExists 'test_name/build.gradle'
-
-        assertFileContains folder.root, 'test_name/README.md', "# test_name"
-
-        //TODO: test for extraTemplate
     }
 
-    @Before
-    void before(){
-        System.setProperty('init.dir', folder.root as String)
-        project = ProjectBuilder.builder().build()
-        task = project.task('targetTask', type:taskClass)
+    def "all the basic directories and files should exists"(){
+
+        when:
+            task.create()
+
+        then:
+            assertFileExists 'test_name/src/main/java/test/group'
+            assertFileExists 'test_name/src/test/java/test/group'
+            assertFileExists 'test_name/src/main/rdl'
+            assertFileExists 'test_name/src/main/webapp'
+            assertFileExists 'test_name/src/main/resources'
+
+            assertFilesExists('test_name',
+                    (String[])["build.gradle", "README.md", "README.sh", "gradle.properties"])
     }
 
-    @After
-    void after(){
-        System.setProperty('init.dir', '')
+
+    def "extra template should generate based on given extension input"(){
+        given:
+            def file = folder.newFile("test.txt")
+            file.write("This file is for testing")
+            pluginExtension.extraTemplate = {
+                'src' {
+                    'main'{
+                        'sample' {
+                            'test.txt' template: file.getAbsolutePath()
+                        }
+                    }
+                }
+            }
+
+        when:
+            task.create()
+
+        then:
+            String filePath = 'test_name/src/main/sample/test.txt'
+            assertFileExists 'test_name/src/main/sample'
+            assertFileExists filePath
+            assertFileContains folder.root, filePath, "This file is for testing"
     }
+
+
+    def "build.gradle should apply from what the extension specifies"() {
+        given:
+            pluginExtension.applyFromPath = "no/such/path/just/testing"
+
+        when:
+            task.create()
+
+        then:
+            assertFileContains folder.root, 'test_name/build.gradle', "apply from: 'no/such/path/just/testing'"
+    }
+
+    @Unroll
+    def "sample.rdl should or should not get generated based on extension"(){
+        given:
+            pluginExtension.createSampleRDL = createSampleRDL
+
+        when:
+            task.create()
+
+        then:
+            assertFileExists folder.root, 'test_name/src/main/rdl/sample.rdl', createSampleRDL
+
+        where:
+            createSampleRDL << [true, false]
+
+    }
+
 
     /**
      * Asserts that the specified file exists
@@ -71,8 +107,14 @@ class CreateParsecProjectTaskTest{
      * @param root
      * @param path
      */
-    protected void assertFileExists(File root = folder.root, String path){
-        assert new File(root, path).exists()
+    protected void assertFileExists(File root = folder.root, String path, boolean assertion = true){
+        assert assertion == new File(root, path).exists()
+    }
+
+    protected void assertFilesExists(File root = folder.root, String projectName, String[] files){
+        for (file in files){
+            assertFileExists(root, "${projectName}/${file}")
+        }
     }
 
     /**
@@ -92,3 +134,4 @@ class CreateParsecProjectTaskTest{
 
 
 }
+
