@@ -3,7 +3,6 @@ package com.yahoo.parsec.parsec_templates.tasks
 import com.yahoo.parsec.parsec_templates.ParsecTemplatesExtension
 import org.gradle.api.tasks.TaskAction
 import templates.ProjectTemplate
-
 /**
  * @author waynewu
  */
@@ -11,13 +10,20 @@ import templates.ProjectTemplate
 
 class CreateParsecProjectTask extends AbstractProjectTask {
 
+    //TODO: Move this to a constructor
     String projectGroup
     String projectName
     String projectVersion
     String projectPath
     String projectGroupPath
-    String pluginExtension = getProject().getExtensions().findByType(ParsecTemplatesExtension.class)
+    ParsecTemplatesExtension pluginExtension
 
+    public CreateParsecProjectTask(){
+        pluginExtension = getProject().getExtensions().findByType(ParsecTemplatesExtension.class)
+        if(pluginExtension == null){
+            pluginExtension = new ParsecTemplatesExtension();
+        }
+    }
 
     @TaskAction
     void create() {
@@ -63,11 +69,11 @@ class CreateParsecProjectTask extends AbstractProjectTask {
                 }
                 'pmd' {}
                 'findbugs' {
-                    'findbugs-exclude.xml' getText('/templates/findbugs-exclude.xml')
+                    'excludeFilter.xml' getText('/templates/excludeFilter.xml')
                 }
             }
 
-            'build.gradle' template: '/templates/build.gradle', applyFromPath: project.parsecTemplate.applyFromPath, projectGroup: projectGroup
+            'build.gradle' template: '/templates/build.gradle', applyFromPath: pluginExtension.applyFromPath, projectGroup: projectGroup
             'gradle.properties' template: '/templates/gradle.properties', projectVersion: projectVersion
             'README.md' template: '/templates/README.md', projectName: projectName
             'README.sh' getText('/templates/README.sh')
@@ -79,6 +85,6 @@ class CreateParsecProjectTask extends AbstractProjectTask {
      * Generate extra folder structures and files defined by Client in configurations
      */
     protected void generate_extra(){
-        ProjectTemplate.fromRoot(projectPath, project.parsecTemplate.extraTemplate)
+        ProjectTemplate.fromRoot(projectPath, pluginExtension.extraTemplate)
     }
 }

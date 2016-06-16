@@ -11,7 +11,7 @@ import java.nio.file.NotDirectoryException
  * @author waynewu
  */
 
-class AbstractProjectTaskSpec extends Specification {
+class AbstractProjectTaskTest extends Specification {
 
     Project projectMock
     Task task

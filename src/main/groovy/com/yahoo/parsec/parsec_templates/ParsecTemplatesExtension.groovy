@@ -14,8 +14,9 @@ class ParsecTemplatesExtension {
     /**
      * File that that the generated build.gradle should inherit (extend) from
      * default will be the parsec-base-build
+     * TODO: add script to always target to the latest when release
      */
-    String applyFromPath = "https://raw.githubusercontent.com/wayne-wu/parsec-base-build/master/parsec.gradle"
+    String applyFromPath = "https://dl.bintray.com/wayne-wu/Gradle/parsec-base-build/1.0.1/parsec.gradle"
 
     String repository = ""
 
@@ -24,7 +25,6 @@ class ParsecTemplatesExtension {
     public Closure getExtraTemplate(){ return extraTemplate; }
 
     public String getApplyFromPath(){ return applyFromPath; }
-
 
     //TODO: Provide some boolean options such as Overriding etc. to provide more flexibility
 

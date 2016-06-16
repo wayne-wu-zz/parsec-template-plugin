@@ -11,6 +11,7 @@ import java.nio.file.NotDirectoryException
 
 abstract class AbstractProjectTask extends DefaultTask {
 
+
     /**
      * Get the group name either through command, project specification, or prompt
      * @return group name (groupId)
