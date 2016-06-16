@@ -16,8 +16,6 @@ buildscript{
 }
 
 apply plugin: 'groovy'
-apply plugin: 'pmd'
-apply plugin: 'codenarc'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.johnrengelman.shadow' //shadowJar
 apply plugin: 'net.researchgate.release' //release plugin
