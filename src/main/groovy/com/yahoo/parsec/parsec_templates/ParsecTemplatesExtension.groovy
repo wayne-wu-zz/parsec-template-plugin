@@ -18,9 +18,11 @@ class ParsecTemplatesExtension {
      */
     String applyFromPath = "https://dl.bintray.com/wayne-wu/Gradle/parsec-base-build/1.0.1/parsec.gradle"
 
-    String repository = ""
-
-    String dependency = ""
+    /**
+     * Create a sample RDL file that allows you to run parsec-generate without anything else
+     * Used mostly for testing though, it can be used as a reference
+     */
+    boolean createSampleRDL = false
 
     public Closure getExtraTemplate(){ return extraTemplate; }
 

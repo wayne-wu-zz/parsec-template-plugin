@@ -38,6 +38,10 @@ class CreateParsecProjectTask extends AbstractProjectTask {
 
         generate_template()
         generate_extra()
+
+        if(pluginExtension.createSampleRDL){
+            generate_sample_rdl()
+        }
     }
 
     /**
@@ -86,5 +90,13 @@ class CreateParsecProjectTask extends AbstractProjectTask {
      */
     protected void generate_extra(){
         ProjectTemplate.fromRoot(projectPath, pluginExtension.extraTemplate)
+    }
+
+    protected void generate_sample_rdl(){
+        ProjectTemplate.fromRoot(projectPath){
+            'src/main/rdl'{
+                'sample.rdl' template: '/templates/sample.rdl', groupName: projectGroup
+            }
+        }
     }
 }
