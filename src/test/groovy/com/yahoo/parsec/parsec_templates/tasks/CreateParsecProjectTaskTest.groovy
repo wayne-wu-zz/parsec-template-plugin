@@ -21,6 +21,7 @@ class CreateParsecProjectTaskTest extends Specification{
     private Task task
     private ParsecTemplatesExtension pluginExtension
 
+
     def setup(){
         project = new ProjectBuilder().withProjectDir(folder.getRoot()).build()
         pluginExtension = project.extensions.create("parsecTemplate", ParsecTemplatesExtension)
@@ -30,6 +31,7 @@ class CreateParsecProjectTaskTest extends Specification{
         project.ext["groupId"] = 'test.group'
         project.ext["parent_dir"] = folder.getRoot() as String
     }
+
 
     def "all the basic directories and files should exists"(){
 
@@ -44,7 +46,7 @@ class CreateParsecProjectTaskTest extends Specification{
             assertFileExists 'test_name/src/main/resources'
 
             assertFilesExists('test_name',
-                    (String[])["build.gradle", "README.md", "README.sh", "gradle.properties"])
+                    ["build.gradle", "README.md", "README.sh", "gradle.properties", ".travis.yml"] as String[])
     }
 
 
@@ -85,19 +87,22 @@ class CreateParsecProjectTaskTest extends Specification{
     }
 
     @Unroll
-    def "sample.rdl should or should not get generated based on extension"(){
+    def "optional files should or should not be generated based on extension"(){
         given:
             pluginExtension.createSampleRDL = createSampleRDL
+            pluginExtension.createTravisCI = createTravisCI
 
         when:
             task.create()
 
         then:
             assertFileExists folder.root, 'test_name/src/main/rdl/sample.rdl', createSampleRDL
+            assertFileExists folder.root, "test_name/.travis.yml", createTravisCI
 
         where:
-            createSampleRDL << [true, false]
-
+            createSampleRDL | createTravisCI
+            true            | true
+            false           | false
     }
 
 

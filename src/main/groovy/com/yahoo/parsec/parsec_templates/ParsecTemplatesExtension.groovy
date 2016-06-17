@@ -24,6 +24,11 @@ class ParsecTemplatesExtension {
      */
     boolean createSampleRDL = false
 
+    /**
+     * Create .travis.yml file for Continuous Integration with Travis. Default is set to true.
+     */
+    boolean createTravisCI = true
+
     public Closure getExtraTemplate(){ return extraTemplate; }
 
     public String getApplyFromPath(){ return applyFromPath; }

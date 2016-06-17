@@ -10,7 +10,6 @@ import templates.ProjectTemplate
 
 class CreateParsecProjectTask extends AbstractProjectTask {
 
-    //TODO: Move this to a constructor
     String projectGroup
     String projectName
     String projectVersion
@@ -42,6 +41,11 @@ class CreateParsecProjectTask extends AbstractProjectTask {
         if(pluginExtension.createSampleRDL){
             generate_sample_rdl()
         }
+        if(pluginExtension.createTravisCI){
+            generate_travis_ci()
+        }
+
+        //TODO: Nice to generate wrapper as well
     }
 
     /**
@@ -92,11 +96,20 @@ class CreateParsecProjectTask extends AbstractProjectTask {
         ProjectTemplate.fromRoot(projectPath, pluginExtension.extraTemplate)
     }
 
+    /**
+     * Generate sample rdl file
+     */
     protected void generate_sample_rdl(){
         ProjectTemplate.fromRoot(projectPath){
             'src/main/rdl'{
                 'sample.rdl' template: '/templates/sample.rdl', groupName: projectGroup
             }
+        }
+    }
+
+    protected void generate_travis_ci(){
+        ProjectTemplate.fromRoot(projectPath){
+            '.travis.yml' getText('/templates/.travis.yml')
         }
     }
 }

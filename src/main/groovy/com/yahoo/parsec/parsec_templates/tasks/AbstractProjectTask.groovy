@@ -60,7 +60,7 @@ abstract class AbstractProjectTask extends DefaultTask {
     }
 
     /**
-     * Get the content of a specified file in the resource folder
+     * Get the content (Non GString) of a specified file in the resource folder
      * @param path
      * @return content of the file as String
      */

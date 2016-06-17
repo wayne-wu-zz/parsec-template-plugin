@@ -1,4 +1,3 @@
-//Temporary parsec.gradle file for testing
 apply from: '${applyFromPath}'
 
 group = '${projectGroup}'
