@@ -23,6 +23,7 @@ apply plugin: 'net.researchgate.release' //release plugin
 apply plugin: 'com.jfrog.bintray' //bintray plugin
 apply plugin: "com.gradle.plugin-publish" //publish plugin
 apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
 jacocoTestReport {
     reports {
