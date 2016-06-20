@@ -38,7 +38,7 @@ abstract class AbstractProjectTask extends DefaultTask {
      * @return project version
      */
     protected String projectVersion(){
-         project.hasProperty('versionNum') ? project.property('versionNum').toString() : "1.0-SNAPSHOT"
+         project.hasProperty('versionNum') ? project.property('versionNum').toString() : "1.0.0-SNAPSHOT"
     }
 
     /**

@@ -22,6 +22,7 @@ class CreateParsecProjectTask extends AbstractProjectTask {
         super('createParsecProject', "create the folder structure designed for a Parsec project")
         pluginExtension = getProject().getExtensions().findByType(ParsecTemplatesExtension.class)
         if(pluginExtension == null){
+            getLogger().info("Project did not create an extension. A new one is created.")
             pluginExtension = new ParsecTemplatesExtension();
         }
     }
@@ -47,8 +48,6 @@ class CreateParsecProjectTask extends AbstractProjectTask {
         if(pluginExtension.createTravisCI){
             generateTravisCI()
         }
-
-        //TODO: Nice to generate wrapper as well
     }
 
     /**
