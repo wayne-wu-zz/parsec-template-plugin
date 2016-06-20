@@ -29,10 +29,15 @@ class ParsecTemplatesExtension {
      */
     boolean createTravisCI = true
 
+    /**
+     * Create the wrapper files for the gradle project
+     */
+    boolean createWrapper = true
+
+
+
     public Closure getExtraTemplate(){ return extraTemplate; }
 
     public String getApplyFromPath(){ return applyFromPath; }
-
-    //TODO: Provide some boolean options such as Overriding etc. to provide more flexibility
 
 }

@@ -11,6 +11,11 @@ import java.nio.file.NotDirectoryException
 
 abstract class AbstractProjectTask extends DefaultTask {
 
+    AbstractProjectTask(final String name, final String description){
+        this.name = name
+        this.description = description
+        this.group = "Parsec"
+    }
 
     /**
      * Get the group name either through command, project specification, or prompt
