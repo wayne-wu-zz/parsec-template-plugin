@@ -1,5 +1,5 @@
 #Parsec Template
-[![Build Status](https://travis-ci.org/wayne-wu/parsec-template-plugin.svg?branch=master)](https://travis-ci.org/wayne-wu/parsec-template-plugin)
+[![Build Status](https://travis-ci.org/wayne-wu/parsec-template-plugin.svg?branch=master)](https://travis-ci.org/wayne-wu/parsec-template-plugin) [![Coverage Status](https://coveralls.io/repos/github/wayne-wu/parsec-template-plugin/badge.svg?branch=master)](https://coveralls.io/github/wayne-wu/parsec-template-plugin?branch=master)
 
 Parsec Template Plugin is a gradle plugin extended from townsfold's [gradle templates plugin](https://github.com/townsfolk/gradle-templates).
 It provides similar functionality as Maven's archetype, which generates files and directories based on a template. In parsec templates plugin, a custom template is provided which is tailored
