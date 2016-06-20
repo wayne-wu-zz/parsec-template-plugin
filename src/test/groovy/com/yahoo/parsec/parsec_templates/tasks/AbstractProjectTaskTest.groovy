@@ -49,7 +49,7 @@ class AbstractProjectTaskTest extends Specification {
 
     def "get version number by default"(){
         expect:
-            task.projectVersion() == "1.0-SNAPSHOT"
+            task.projectVersion() == "1.0.0-SNAPSHOT"
     }
 
     def "get project directory through properties"(){
