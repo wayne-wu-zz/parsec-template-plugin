@@ -8,8 +8,8 @@ buildscript{
         }
     }
     dependencies{
-        classpath group: 'gradle.plugin.com.yahoo.parsec.parsec-templates',
-                name: 'parsec-templates',
+        classpath group: 'gradle.plugin.com.yahoo.parsec',
+                name: 'parsec-template-plugin',
                 version: '1.0.7-pre'
     }
 }
@@ -17,6 +17,7 @@ buildscript{
 allprojects {
     apply plugin: com.yahoo.parsec.parsec_templates.ParsecTemplatesPlugin
 }
+
 
 
 //TODO: see why the code below does not work
