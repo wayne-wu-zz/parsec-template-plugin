@@ -13,4 +13,4 @@ cache:
 
 after_success:
   - ./gradlew jacocoTestReport coveralls
-  - $TRAVIS_BRANCH == 'master' && echo "master only"
+  - $TRAVIS_BRANCH == 'master' && ./gradlew check
