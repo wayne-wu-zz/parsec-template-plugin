@@ -13,4 +13,4 @@ cache:
 
 after_success:
   - ./gradlew jacocoTestReport coveralls
-  - sh .release.sh $TRAVIS_BRANCH
+  - bash .release.sh $TRAVIS_BRANCH
