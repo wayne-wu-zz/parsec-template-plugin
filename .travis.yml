@@ -13,10 +13,4 @@ cache:
 
 after_success:
   - ./gradlew jacocoTestReport coveralls
-
-after_success: 
-  - if[ "$TRAVIS_BRANCH" == "master" ]; then
-      ./gradlew check
-    else
-      echo "this is not the master branch"
-    fi
+  - sh .release.sh $TRAVIS_BRANCH
