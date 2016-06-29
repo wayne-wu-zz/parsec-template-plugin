@@ -34,10 +34,8 @@ jacocoTestReport {
 
 repositories {
     mavenCentral()
-    mavenLocal()
     jcenter()
 
-    //gradle-templates
     maven{
         url 'http://dl.bintray.com/cjstehno/public'
     }
